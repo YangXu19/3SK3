@@ -88,6 +88,8 @@ def swap_rows(mat, vec, row1, row2):
     vec[[row1, row2]] = mat[[row2, row1]]
 
 # With pivoting
+
+
 def Forward_Elimination_Pivoting(A_mat, b_vec):
     # number of linear equations
     n = len(b_vec)
@@ -119,27 +121,34 @@ def Forward_Elimination_Pivoting(A_mat, b_vec):
 
 # Generate random test case with an n x n coefficient matrix and an n x 1 right-hand side vector filled with random values from -100 to 100
 def random_test_case(n):
-    A_mat = array(random.uniform(-100.0, 100.0, (n,n)), float)
+    A_mat = array(random.uniform(-100.0, 100.0, (n, n)), float)
     b_vec = array(random.uniform(-100.0, 100.0, n), float)
     return A_mat, b_vec
 
 # Generate random test cases with an n x n coefficient matrix and an n x 1 right-hand side vector filled with random values specified in range
+
+
 def random_test_case_in_range(n, low, high):
-    A_mat = array(random.uniform(low, high, (n,n)), float)
+    A_mat = array(random.uniform(low, high, (n, n)), float)
     b_vec = array(random.uniform(low, high, n), float)
     return A_mat, b_vec
 
-# Checks solution by multiplying coefficient matrix with solution vector and comparing with constant vector    
+# Checks solution by multiplying coefficient matrix with solution vector and comparing with constant vector
+
+
 def validate_solution(A_mat, b_vec, solu_vec):
     calculated_constant_vector = numpy.dot(A_mat, solu_vec)
-    print("-> Verfication: The calculated b_vec is:" + str(calculated_constant_vector))
+    print("-> Verfication: The calculated b_vec is:" +
+          str(calculated_constant_vector))
     print("-> Verification: The actual b_vec is:" + str(b_vec))
     return numpy.allclose(calculated_constant_vector, b_vec)
 
-# Creates an nxn example matrix and confirms solution by multiplying 
+# Creates an nxn example matrix and confirms solution by multiplying
 # A with X to compare with b vector for both pivoting and non-pivoting solutions.
+
+
 def part2_q2_examples(n):
-    print("\n|||Examples for ",n,"x",n," matrix|||" )
+    print("\n|||Examples for ", n, "x", n, " matrix|||")
     A_nxn, b_nxn = random_test_case(n)
 
     print("Initial A_mat is: \n", A_nxn)
@@ -149,7 +158,8 @@ def part2_q2_examples(n):
     solu_vec_nxn_pivoting = Gauss_Elimination_Pivoting(A_nxn, b_nxn)
     solu_vec_numpy = numpy.linalg.solve(A_nxn, b_nxn)
     print("The Gauss Elimination solution is: " + str(solu_vec_nxn))
-    print("The Gauss Elimination solution with Pivoting is: " + str(solu_vec_nxn_pivoting))
+    print("The Gauss Elimination solution with Pivoting is: " +
+          str(solu_vec_nxn_pivoting))
     print("The Numpy calculated solution is: " + str(solu_vec_numpy))
 
     # Confirm solutions by multiplying coefficient matrix with solution vector and comparing with constant vector
@@ -157,10 +167,11 @@ def part2_q2_examples(n):
     print("* Gauss Elimination Verification: " + str(confirm_nxn))
 
     confirm_nxn_pivoting = validate_solution(A_nxn, b_nxn, solu_vec_nxn)
-    print("* Gauss Elimination with Pivoting Verification: " + str(confirm_nxn_pivoting))
+    print("* Gauss Elimination with Pivoting Verification: " +
+          str(confirm_nxn_pivoting))
+
 
 def main():
-<<<<<<< HEAD
     # A_mat = array([[4, -2, 1, 3],
     #                [1, 9, 2, 4],
     #                [4, 6, 1, 0],
@@ -169,7 +180,6 @@ def main():
     #
     # Gauss_Elimination(A_mat, b_vec)
     # Gauss_Elimination_Pivoting(A_mat, b_vec)
-
 
     # random_test_case test
     A_mat1, b_vec2 = random_test_case(200)
@@ -188,20 +198,6 @@ def main():
     #     times.append(elapsed_time)
 
     print("The elapsed time is: " + str(elapsed_time))
-=======
-    A_mat = array([[3, -2, 5, 0],
-                   [4, 5, 8, 1],
-                   [1, 1, 2, 1],
-                   [2, 7, 6, 5]], float)
-    b_vec = array([2, 4, 5, 7], float)
-
-    Gauss_Elimination(A_mat, b_vec)
-    Gauss_Elimination_Pivoting(A_mat, b_vec)
-
-    # part2_q2_examples(2)
-    # part2_q2_examples(3)
-    # part2_q2_examples(4)
->>>>>>> 481a5d9d86143a505c1ade16bb9963f6d0a3ace6
 
 
 if __name__ == '__main__':
