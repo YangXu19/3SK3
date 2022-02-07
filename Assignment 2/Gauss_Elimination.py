@@ -1,4 +1,4 @@
-from numpy import array, zeros
+from numpy import array, zeros, random
 
 
 def Gauss_Elimination(A_mat, b_vec):
@@ -71,6 +71,18 @@ def Gauss_Elimination_Pivoting(A_mat, b_vec, col):
 def swap_rows(mat, vec, row1, row2):
     pass
 
+# Generate random test case with an n x n coefficient matrix and an n x 1 right-hand side vector filled with random values from -100 to 100
+def random_test_case(n):
+    A_mat = array(random.uniform(-100.0, 100.0, (n,n)), float)
+    b_vec = array(random.uniform(-100.0, 100.0, n), float)
+    return A_mat, b_vec
+
+# Generate random test cases with an n x n coefficient matrix and an n x 1 right-hand side vector filled with random values specified in range
+def random_test_case_in_range(n, low, high):
+    A_mat = array(random.uniform(low, high, (n,n)), float)
+    b_vec = array(random.uniform(low, high, n), float)
+    return A_mat, b_vec
+
 
 def main():
     A_mat = array([[3, -2, 5, 0],
@@ -79,6 +91,10 @@ def main():
                    [2, 7, 6, 5]], float)
     b_vec = array([2, 4, 5, 7], float)
     Gauss_Elimination(A_mat, b_vec)
+
+    #random_test_case test
+    A_mat1, b_vec2 = random_test_case(5)
+    Gauss_Elimination(A_mat1, b_vec2)
 
 
 if __name__ == '__main__':
