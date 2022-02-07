@@ -1,4 +1,5 @@
 import numpy
+import time
 from numpy import array, zeros, random
 
 
@@ -129,18 +130,33 @@ def random_test_case_in_range(n, low, high):
 
 
 def main():
-    A_mat = array([[3, -2, 5, 0],
-                   [4, 5, 8, 1],
-                   [1, 1, 2, 1],
-                   [2, 7, 6, 5]], float)
-    b_vec = array([2, 4, 5, 7], float)
-    
-    Gauss_Elimination(A_mat, b_vec)
-    Gauss_Elimination_Pivoting(A_mat, b_vec)
+    # A_mat = array([[4, -2, 1, 3],
+    #                [1, 9, 2, 4],
+    #                [4, 6, 1, 0],
+    #                [6, 3, 9, 4]], float)
+    # b_vec = array([2, 4, 5, 7], float)
+    #
+    # Gauss_Elimination(A_mat, b_vec)
+    # Gauss_Elimination_Pivoting(A_mat, b_vec)
 
-    # #random_test_case test
-    # A_mat1, b_vec2 = random_test_case(5)
-    # Gauss_Elimination(A_mat1, b_vec2)
+
+    # random_test_case test
+    A_mat1, b_vec2 = random_test_case(200)
+    # start timer
+    t = time.time()
+    Gauss_Elimination_Pivoting(A_mat1, b_vec2)
+    elapsed_time = time.time() - t
+
+    # times = []
+    #
+    # for i in range(10):
+    #     t = time.time()
+    #     A_mat1, b_vec2 = random_test_case(200)
+    #     Gauss_Elimination_Pivoting(A_mat1, b_vec2)
+    #     elapsed_time = time.time() - t
+    #     times.append(elapsed_time)
+
+    print("The elapsed time is: " + str(elapsed_time))
 
 
 if __name__ == '__main__':
