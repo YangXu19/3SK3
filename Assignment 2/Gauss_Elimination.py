@@ -119,7 +119,8 @@ def Forward_Elimination_Pivoting(A_mat, b_vec):
 
     return A_mat, b_vec
 
-# Generate random test case with an n x n coefficient matrix and an n x 1 right-hand side vector filled with random values from -100 to 100
+# Generate random test case with an n x n coefficient matrix and an n x 1
+# right-hand side vector filled with random values from -100 to 100
 
 
 def random_test_case(n):
@@ -173,8 +174,10 @@ def part2_q2_examples(n):
           str(confirm_nxn_pivoting))
 
 # Function to perform Q4 steps for a given value of k
+
+
 def part2_q4_error_calculations(k):
-    solution_vecs = []
+    solution_vecs_errors = []
 
     # Perform Q4 Steps 100 times
     for i in range(100):
@@ -194,14 +197,18 @@ def part2_q4_error_calculations(k):
             A_10x10_Perturbed, b_10x10_Perturbed)
 
         # Calculate error using E = sqrt(delta_x1^2 + delta_x2^2 + ..... delta_x10^2 )
-        sum_of_squares = numpy.sum(numpy.square(solu_vec_10x10 - solu_vec_10x10_Perturbed))
+        sum_of_squares = numpy.sum(numpy.square(
+            solu_vec_10x10 - solu_vec_10x10_Perturbed))
         error = numpy.sqrt(sum_of_squares)
-        solution_vecs.append(error)
+        solution_vecs_errors.append(error)
 
-    # Calculate mean and standard deviation of errors    
-    mean_of_error = numpy.mean(solution_vecs, axis=0)
-    standard_deviation_of_error = numpy.std(solution_vecs, axis=0)
+    # Calculate mean and standard deviation of errors
+    mean_of_error = numpy.mean(solution_vecs_errors, axis=0)
+    standard_deviation_of_error = numpy.std(solution_vecs_errors, axis=0)
     return mean_of_error, standard_deviation_of_error
+
+# Helper function to perform Q4 steps and generate plots
+
 
 def part2_q4_helper():
     # [-10^-k, 10^-k]
@@ -241,7 +248,6 @@ def main():
     # Gauss_Elimination(A_mat, b_vec)
     # Gauss_Elimination_Pivoting(A_mat, b_vec)
 
-
     # random_test_case test
     A_mat1, b_vec2 = random_test_case(200)
     # start timer
@@ -265,7 +271,6 @@ def main():
     # part2_q2_examples(4)
 
     # part2_q4_helper()
-
 
 
 if __name__ == '__main__':
