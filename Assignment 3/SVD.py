@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import imread
 
 def main():
-    img = imread('squares.jpg')
-    #gray_img = grayscale(img)
+    img = imread('lily.jpg')
+    gray_img = grayscale(img)
     random_img = np.random.uniform(0,100,(220,220))
-    ranks = [1,2,4,16,32,64,128,220]
-    svd_ranks(random_img, ranks)
+    ranks = [1,2,4,16,32,64,120]
+    svd_ranks(gray_img, ranks)
 
 def grayscale(img):
     rgb_weights = [0.2989, 0.5879, 0.1140]
@@ -24,7 +24,7 @@ def svd_ranks(gray_img, ranks):
     plt.title('McMasterLogo.png Singular Values')
     plt.plot(S)
     print(S)
-    plt.show()      
+    plt.show()
 
     j = 0
 
@@ -42,8 +42,9 @@ def svd_ranks(gray_img, ranks):
 
         # Calculate Residual Percentage Error
         A_frob = np.linalg.norm(gray_img, 'fro')
-        B_frob = np.linalg.norm(Xapprox, 'fro')
-        Residual_Percentage_Error = (abs(A_frob - B_frob) / abs(A_frob))*100
+        AminusB = np.subtract(gray_img,Xapprox)
+        AminusB_frob = np.linalg.norm(AminusB, 'fro')
+        Residual_Percentage_Error = (abs(AminusB_frob) / abs(A_frob)) * 100
         print("Residual Percentage Error = " + str(Residual_Percentage_Error))
 
         # Compression Rate of Approximation
