@@ -8,7 +8,7 @@ def main():
     gray_img = grayscale(img)
     random_img = np.random.uniform(0,100,(220,220))
     ranks = [1,2,4,16,32,64,120]
-    svd_ranks(gray_img, ranks)
+    svd_ranks(random_img, ranks)
 
 def grayscale(img):
     rgb_weights = [0.2989, 0.5879, 0.1140]
@@ -51,7 +51,7 @@ def svd_ranks(gray_img, ranks):
         n = gray_img.shape[0]
         m = gray_img.shape[1]
         Compression_Rate = ((r+(r*m)+(r*n))/(n*m))
-        print("Compression Rate = " + str(Compression_Rate))
+        # print("Compression Rate = " + str(Compression_Rate))
 
     plt.show()
 
