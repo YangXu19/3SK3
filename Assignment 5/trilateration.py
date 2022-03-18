@@ -6,7 +6,11 @@ import random
 # step 1
 def r_hat_distances(xi, yi, zi):
     r_hat_nums = []
+
+    # times in seconds
     t = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300]
+
+    # compute x, y, z distances in km
     for num in t:
         if num <= 100:
             x = num*40/1000
@@ -21,11 +25,14 @@ def r_hat_distances(xi, yi, zi):
             y = 2
             z = (num - 200)*5/1000
 
+        # compute distance in m
         r_hat_nums.append(math.sqrt(((x - xi) ** 2) + ((y - yi) ** 2) + ((z - zi) ** 2)) * 1000)
     #return r_hat_nums
 
     # Step 2
     r_hat_nums_noise = []
+
+    # make random distribution values
     sp.random.seed(400186733)
     normal_dist = sp.random.normal(0, 0.2, 16)
     for i in range(16):
