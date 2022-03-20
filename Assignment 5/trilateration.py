@@ -11,7 +11,7 @@ def r_hat_distances(xi, yi, zi):
     # times in seconds
     t = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300]
 
-    # compute x, y, z distances in km
+    # compute x, y, z distances in kmp;l
     for num in t:
         if num <= 100:
             x = num*40/1000
@@ -177,21 +177,21 @@ def main():
 
     i = 0
     for j in range(7):
-        r1c1 = r1c1 + ((x_val[i] - xi[j])**2)/((row1_b[j])**2)
-        r1c2 = r1c2 + (((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2)
-        r1c3 = r1c3 + (((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2)
+        r1c1 = r1c1 + (((x_val[i] - xi[j])**2)/((row1_b[j])**2))
+        r1c2 = r1c2 + ((((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2))
+        r1c3 = r1c3 + ((((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
 
-        r2c1 = r2c1 + (((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2)
-        r2c2 = r2c2 + ((y_val[i] - yi[j])**2)/((row1_b[j])**2)
-        r2c3 = r2c3 + (((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2)
+        r2c1 = r2c1 + ((((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2))
+        r2c2 = r2c2 + (((y_val[i] - yi[j])**2)/((row1_b[j])**2))
+        r2c3 = r2c3 + ((((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
 
-        r3c1 = r3c1 + (((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2)
-        r3c2 = r3c2 + (((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2)
-        r3c3 = r2c2 + ((z_val[i] - zi[j])**2)/((row1_b[j])**2)
+        r3c1 = r3c1 + ((((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
+        r3c2 = r3c2 + ((((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
+        r3c3 = r2c2 + (((z_val[i] - zi[j])**2)/((row1_b[j])**2))
 
-        JTf_row1 = ((x_val[i] - xi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j]))
-        JTf_row2 = ((y_val[i] - yi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j]))
-        JTf_row3 = ((z_val[i] - zi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j]))
+        JTf_row1 = JTf_row1 + (((x_val[i] - xi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
+        JTf_row2 = JTf_row2 + (((y_val[i] - yi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
+        JTf_row3 = JTf_row3 + (((z_val[i] - zi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
 
     row1.append(r1c1)
     row1.append(r1c2)
@@ -214,21 +214,24 @@ def main():
     JTJ_matrix.append(row2)
     JTJ_matrix.append(row3)
 
-    np.array(JTJ_matrix)
-    JTJ_matrix_transpose = np.array(JTJ_matrix)
+    JTJ_matrix_np = np.array(JTJ_matrix)
+    JTJ_matrix_inverse = np.linalg.inv(JTJ_matrix_np)
     # print(JTJ_matrix_transpose)
 
     JTf_matrix = []
     JTf_matrix.append(JTf_r1)
     JTf_matrix.append(JTf_r2)
     JTf_matrix.append(JTf_r3)
+
+    JTf_matrix_np = np.array(JTf_matrix)
+
     # print(JTf_matrix)
 
-    matrix_dot = np.dot(JTJ_matrix_transpose, JTf_matrix)
+    matrix_dot = np.dot(JTJ_matrix_inverse, JTf_matrix_np)
     #print(matrix_dot)
 
-    R_K = [[0], [0], [0]]
-    for i in range(100):
+    R_K = [[2000], [3000], [4000]]
+    for i in range(1000):
         R_K = np.subtract(R_K, matrix_dot)
 
     print(R_K)
