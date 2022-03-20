@@ -149,6 +149,23 @@ def main():
         y_val.append(y)
         z_val.append(z)
 
+    # print(JTf_matrix)
+
+    # matrix_dot = np.dot(JTJ_matrix_inverse, JTf_matrix_np)
+    #print(matrix_dot)
+
+    R_K = [3000, 4000, 5000]
+    for i in range(1000):
+        R_K = np.subtract(R_K, np.dot(np.linalg.inv(JtJCalc(R_K, row1_bn)), JTfCalc(R_K, row1_bn)))
+
+    print(R_K)
+
+    # print(row1)
+    # print(x_val)
+    # print(y)
+    # print(z)
+
+def JtJCalc(R_k, R_i):
     xi = [0, 3.5, 0, 4.5, 0, 1.5, 3.0, 4.0]
     yi = [0.5, 0, 1.5, 0, 2.5, 2.5, 0, 4.0]
     zi = [0, 1, 0, 0, 3.5, 0, 2.0, 4.0]
@@ -156,10 +173,6 @@ def main():
     row1 = []
     row2 = []
     row3 = []
-
-    JTf_r1 = []
-    JTf_r2 = []
-    JTf_r3 = []
 
     r1c1 = 0
     r1c2 = 0
@@ -171,27 +184,30 @@ def main():
     r3c2 = 0
     r3c3 = 0
 
-    JTf_row1 = 0
-    JTf_row2 = 0
-    JTf_row3 = 0
+    x_val = R_k[0]
+    y_val = R_k[1]
+    z_val = R_k[2]
+
+    print(x_val)
+    print(y_val)
+    print(z_val)
 
     i = 0
     for j in range(7):
-        r1c1 = r1c1 + (((x_val[i] - xi[j])**2)/((row1_b[j])**2))
-        r1c2 = r1c2 + ((((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2))
-        r1c3 = r1c3 + ((((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
 
-        r2c1 = r2c1 + ((((x_val[i] - xi[j])*(y_val[i] - yi[j])))/((row1_b[j])**2))
-        r2c2 = r2c2 + (((y_val[i] - yi[j])**2)/((row1_b[j])**2))
-        r2c3 = r2c3 + ((((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
+        fi = fICalc(x_val, y_val, z_val, xi[j], yi[j], zi[j], R_i[j])
 
-        r3c1 = r3c1 + ((((x_val[i] - xi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
-        r3c2 = r3c2 + ((((y_val[i] - yi[j])*(z_val[i] - zi[j])))/((row1_b[j])**2))
-        r3c3 = r2c2 + (((z_val[i] - zi[j])**2)/((row1_b[j])**2))
+        r1c1 = r1c1 + (((x_val - xi[j])**2)/((fi + R_i[j])**2))
+        r1c2 = r1c2 + ((((x_val - xi[j])*(y_val - yi[j])))/((fi + R_i[j])**2))
+        r1c3 = r1c3 + ((((x_val - xi[j])*(z_val - zi[j])))/((fi + R_i[j])**2))
 
-        JTf_row1 = JTf_row1 + (((x_val[i] - xi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
-        JTf_row2 = JTf_row2 + (((y_val[i] - yi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
-        JTf_row3 = JTf_row3 + (((z_val[i] - zi[j])*(row1_b[j] - row1_bn[j]))/((row1_b[j])))
+        r2c1 = r2c1 + ((((x_val - xi[j])*(y_val - yi[j])))/((fi + R_i[j])**2))
+        r2c2 = r2c2 + (((y_val - yi[j])**2)/((fi + R_i[j])**2))
+        r2c3 = r2c3 + ((((y_val - yi[j])*(z_val - zi[j])))/((fi + R_i[j])**2))
+
+        r3c1 = r3c1 + ((((x_val - xi[j])*(z_val - zi[j])))/((fi + R_i[j])**2))
+        r3c2 = r3c2 + ((((y_val - yi[j])*(z_val - zi[j])))/((fi + R_i[j])**2))
+        r3c3 = r2c2 + (((z_val - zi[j])**2)/((fi + R_i[j])**2))
 
     row1.append(r1c1)
     row1.append(r1c2)
@@ -205,41 +221,53 @@ def main():
     row3.append(r3c2)
     row3.append(r3c3)
 
+    JTj_matrix = []
+    JTj_matrix.append(row1)
+    JTj_matrix.append(row2)
+    JTj_matrix.append(row3)
+
+    JTj_matrix_np = np.array(JTj_matrix)
+    return JTj_matrix_np
+
+def JTfCalc(R_k, R_i):
+    JTf_r1 = []
+    JTf_r2 = []
+    JTf_r3 = []
+    JTf_row1 = 0
+    JTf_row2 = 0
+    JTf_row3 = 0
+
+    xi = [0, 3.5, 0, 4.5, 0, 1.5, 3.0, 4.0]
+    yi = [0.5, 0, 1.5, 0, 2.5, 2.5, 0, 4.0]
+    zi = [0, 1, 0, 0, 3.5, 0, 2.0, 4.0]
+
+    x_val = R_k[0]
+    y_val = R_k[1]
+    z_val = R_k[2]
+    
     JTf_r1.append(JTf_row1)
     JTf_r2.append(JTf_row2)
     JTf_r3.append(JTf_row3)
-
-    JTJ_matrix = []
-    JTJ_matrix.append(row1)
-    JTJ_matrix.append(row2)
-    JTJ_matrix.append(row3)
-
-    JTJ_matrix_np = np.array(JTJ_matrix)
-    JTJ_matrix_inverse = np.linalg.inv(JTJ_matrix_np)
-    # print(JTJ_matrix_transpose)
 
     JTf_matrix = []
     JTf_matrix.append(JTf_r1)
     JTf_matrix.append(JTf_r2)
     JTf_matrix.append(JTf_r3)
 
+    for j in range(7):
+        fi = fICalc(x_val, y_val, z_val, xi[j], yi[j], zi[j], R_i[j])
+        JTf_row1 = JTf_row1 + (((x_val - xi[j])*(fi))/((fi+R_i[j])))
+        JTf_row2 = JTf_row2 + (((y_val - yi[j])*(fi))/((fi+R_i[j])))
+        JTf_row3 = JTf_row3 + (((z_val - zi[j])*(fi))/((fi+R_i[j])))
+
     JTf_matrix_np = np.array(JTf_matrix)
+    return JTf_matrix_np
 
-    # print(JTf_matrix)
-
-    matrix_dot = np.dot(JTJ_matrix_inverse, JTf_matrix_np)
-    #print(matrix_dot)
-
-    R_K = [[2000], [3000], [4000]]
-    for i in range(1000):
-        R_K = np.subtract(R_K, matrix_dot)
-
-    print(R_K)
-
-    # print(row1)
-    # print(x_val)
-    # print(y)
-    # print(z)
+def fICalc(x, y, z, xi, yi, zi, r_i):
+    print(x)
+    print(xi)
+    print(r_i)
+    return (math.sqrt(((x - xi) ** 2) + ((y - yi) ** 2) + ((z - zi) ** 2)) * 1000) - r_i
 
 if __name__ == '__main__':
     main()
